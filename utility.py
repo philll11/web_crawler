@@ -1,5 +1,3 @@
-
-
 import os
 
 # Each website we scrape will create a seperate directory
@@ -36,7 +34,7 @@ def delete_file_contents(path):
 # Convert file to set
 def file_to_set(file_name):
     results = set()
-    with open(file_name, 'rt') as f:
+    with open(file_name, 'r') as f:
         for line in f:
             results.add(line.replace('\n', ''))
     return results
