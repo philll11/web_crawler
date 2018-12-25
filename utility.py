@@ -1,4 +1,10 @@
+import shutil as Shutil
 import os
+
+# Deleting a directory
+def delete_dir(directory):
+    if os.path.exists(directory):
+        Shutil.rmtree(directory)
 
 # Each website we scrape will create a seperate directory
 def create_new_dir(directory):
@@ -42,5 +48,5 @@ def file_to_set(file_name):
 # Convert set to file
 def set_to_file(links, file_name):
     delete_file_contents(file_name)
-    for link in links:
+    for link in links.copy():
         add_to_file(file_name, link)

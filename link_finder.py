@@ -1,12 +1,7 @@
 from html.parser import HTMLParser
 from urllib import parse
 
-DIRECTORY_NAME = 'Sahara Softwear'
-HOMEPAGE = 'http://www.saharasoftwear.com/'
-
-class LinkFinder(HTMLParser):
-
-    
+class LinkFinder(HTMLParser):   
     
     def __init__(self, base_url, page_url):
         super().__init__()

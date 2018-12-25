@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from link_finder import LinkFinder
 from utility import *
+import sys
 
 
 class Spider:
@@ -35,7 +36,13 @@ class Spider:
             print(thread_name + ' now crawling ' + page_url + '\n')
             print('Queued: ' + str(len(Spider.queue)) + ' | Crawled: ' +  str(len(Spider.crawled)) + '\n')
             Spider.add_links_to_queue(Spider.gather_link(page_url))
-            Spider.queue.remove(page_url)
+            try:
+                Spider.queue.remove(page_url)
+            except:
+                print('Thread name: ' + thread_name)
+                print('page_url: ' + page_url)
+                print('queue: \n' + Spider.queue)
+                sys.exit()
             Spider.crawled.add(page_url)
             Spider.update_files()
 
@@ -55,7 +62,7 @@ class Spider:
         html_string = ''
         try:            
             response = urlopen(page_url)
-            if response.getheader('Content-Type') == 'text/html':
+            if response.getheader('Content-Type') == 'text/html' or response.getheader('Content-Type') == 'text/html; charset=utf-8':
                 html_bytes = response.read()
                 html_string = html_bytes.decode('utf-8')
             finder = LinkFinder(Spider.base_url, page_url)
