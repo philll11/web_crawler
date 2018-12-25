@@ -36,13 +36,7 @@ class Spider:
             print(thread_name + ' now crawling ' + page_url + '\n')
             print('Queued: ' + str(len(Spider.queue)) + ' | Crawled: ' +  str(len(Spider.crawled)) + '\n')
             Spider.add_links_to_queue(Spider.gather_link(page_url))
-            try:
-                Spider.queue.remove(page_url)
-            except:
-                print('Thread name: ' + thread_name)
-                print('page_url: ' + page_url)
-                print('queue: \n' + Spider.queue)
-                sys.exit()
+            Spider.queue.remove(page_url)
             Spider.crawled.add(page_url)
             Spider.update_files()
 
