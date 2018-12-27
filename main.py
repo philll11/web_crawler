@@ -1,20 +1,21 @@
-
 import threading
 from queue import Queue
 from spider import Spider
 from domain import *
 from utility import *
 
-DIRECTORY_NAME = 'NZ Golf'
+DIRECTORY_NAME = 'Tutorialspoint'
 
 #delete_dir(DIRECTORY_NAME)
 
-HOMEPAGE = 'http://www.golf.co.nz/'
+HOMEPAGE = 'https://www.tutorialspoint.com/index.htm'
 DOMAIN_NAME = get_domain_name(HOMEPAGE)
 QUEUE_FILE = DIRECTORY_NAME + '/queue.txt'
 CRAWLED_FILE = DIRECTORY_NAME + '/crawled.txt'
-NUMBER_OF_THREADS = 8 #Number of threads will depend on operating system capabilities
+NUMBER_OF_THREADS = 16 #Number of threads will depend on operating system capabilities
 queue = Queue() #Thread queue
+
+
 Spider(DIRECTORY_NAME, HOMEPAGE, DOMAIN_NAME)
 
 
