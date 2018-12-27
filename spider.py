@@ -2,10 +2,10 @@ from urllib.request import urlopen
 from link_finder import LinkFinder
 from utility import *
 from appurlopener import AppURLopener
-
+import threading
 
 class Spider:
-
+    tlock = threading.Lock()
     directory = ''
     base_url = ''
     domain_name = ''
@@ -34,11 +34,11 @@ class Spider:
     @staticmethod
     def crawl_page(thread_name, page_url):
         if page_url not in Spider.crawled:
-            
+            Spider.tlock.acquire()            
             print(thread_name + ' now crawling ' + page_url)
             print('Queued: ' + str(len(Spider.queue)) + ' | Crawled: ' +  str(len(Spider.crawled)) + '\n')
-            
-            Spider.add_links_to_queue(Spider.gather_link(page_url))
+            Spider.tlock.release()
+            Spider.add_links_to_queue(Spider.gather_link(page_url, thread_name))
             Spider.queue.remove(page_url)
             Spider.crawled.add(page_url)
             Spider.update_files()
@@ -56,7 +56,7 @@ class Spider:
             Spider.queue.add(url)
             
     @staticmethod
-    def gather_link(page_url):
+    def gather_link(page_url, thread):
         list_of_content_types = ['text/html', 'text/html; charset=utf-8', 'text/html; charset=UTF-8']
         html_string = ''
         try:
@@ -67,10 +67,14 @@ class Spider:
                 html_string = html_bytes.decode('utf-8')
             finder = LinkFinder(Spider.base_url, page_url)
             finder.feed(html_string)
-        except:
-            print('####### Error: can not crawl page #######')            
-            write_error_file(Spider.directory, page_url)
+        except Exception as e:
+            Spider.tlock.acquire()
+            print('####### Error: can not crawl page #######')
+            error = thread + ' threw exception: ' + str(type(e)) + '\n On page: ' + page_url + '\n'
+            print(error)
+            Spider.tlock.release()
             return set()
+            
 
         return finder.page_links()
     

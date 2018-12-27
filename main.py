@@ -4,11 +4,11 @@ from spider import Spider
 from domain import *
 from utility import *
 
-DIRECTORY_NAME = 'Tutorialspoint'
+DIRECTORY_NAME = 'a2Milk'
 
-#delete_dir(DIRECTORY_NAME)
+delete_dir(DIRECTORY_NAME)
 
-HOMEPAGE = 'https://www.tutorialspoint.com/index.htm'
+HOMEPAGE = 'https://a2milk.nz/'
 DOMAIN_NAME = get_domain_name(HOMEPAGE)
 QUEUE_FILE = DIRECTORY_NAME + '/queue.txt'
 CRAWLED_FILE = DIRECTORY_NAME + '/crawled.txt'
